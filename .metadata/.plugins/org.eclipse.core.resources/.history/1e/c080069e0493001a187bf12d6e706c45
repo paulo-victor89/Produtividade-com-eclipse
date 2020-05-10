@@ -1,0 +1,16 @@
+package br.com.paulo.empresa.dao;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import br.com.paulo.empresa.modelo.Gasto;
+
+public class GastoDAO extends DAO<Gasto> {
+
+	public GastoDAO() {
+		super(Gasto.class);
+	}
+
+}

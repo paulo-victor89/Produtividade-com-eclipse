@@ -1,0 +1,14 @@
+package br.com.paulo.empresa.dao;
+
+
+
+public class JPAUtil<EntityManager> {
+
+	EntityManager em;
+	
+	javax.persistence.EntityManager getEntityManager(){
+		return em;
+	}
+	
+	
+}

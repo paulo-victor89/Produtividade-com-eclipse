@@ -1,0 +1,11 @@
+package br.com.paulo.empresa.dao;
+
+import br.com.paulo.empresa.modelo.Gasto;
+
+public class GastoDAO extends DAO<Gasto> {
+
+	public GastoDAO() {
+		super(Gasto.class);
+	}
+
+}

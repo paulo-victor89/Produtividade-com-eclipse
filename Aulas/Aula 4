@@ -1,0 +1,125 @@
+ctrl + shift + r: Serve para buscar arquivos em qualquer lugar do projeto
+
+ctrl + shift + t: Serve para buscar types
+
+
+
+02- Localizando de forma eficiente
+
+
+À medida que a aplicação cresce, encontrar um arquivo ou classe do sistema fica cada vez mais difícil. Lembrar exatamente qual é o pacote, em qual projeto, em qual pasta está o que procuramos fica progressivamente pior. Mais comum ainda é quando caímos de paraquedas no código de um sistema legado, cuja evolução não acompanhamos. Se não soubermos onde a classe está, passaremos um tempo considerável vasculhando os pontos da aplicação até encontrar o arquivo desejado.
+
+Mesmo em um projeto pequeno, o tempo que gastamos indo, por exemplo, na pasta WebContent/WEB-INF para abrir o arquivo web.xml é bem grande.
+
+Para facilitar nossa vida, o Eclipse tem um atalho para buscar arquivos pelo nome, não importando onde esse arquivo está. O atalho mais geral é o ctrl + shift + R que serve para abrir Resources, ou seja, qualquer arquivo de qualquer projeto aberto.
+
+Open Resource
+
+Na janela que abriu, podemos começar a digitar o nome do arquivo, por exemplo web, e todos os arquivos cujo nome contenha o que você digitou aparecerão na lista. Basta selecionar o arquivo que você estava procurando e dar enter.
+
+Se você não tem certeza do nome completo do arquivo, ainda pode usar * e ? para aceitar qualquer String e qualquer caractere, respectivamente. Por exemplo, para achar alguma página JSP poderíamos digitar *.jsp.
+
+Open Resource jsp
+
+Quando estiver procurando uma classe, o Eclipse tem uma busca específica otimizada. O atalho para essa busca é o ctrl + shift + T, para abrir Types. Na tela que aparece valem as mesmas regras da busca anterior, com a vantagem de já sabermos se o tipo é, por exemplo, uma classe, interface ou enum, e de buscar classes das bibliotecas que você usa, mesmo que seja uma classe privada ou interna.
+
+Open Type
+
+Para abrir uma classe qualquer, por exemplo ImportadorDeGastos, basta usar o atalho acima, e começar a digitar o nome da classe. Se o nome tiver mais de uma palavra, para otimizar a busca podemos digitar apenas as iniciais IDG ou partes do nome, respeitando as letras maiúsculas, ImpDGas.
+
+Abrir ImportadorDeGastos
+
+Vamos agora abrir a classe Funcionario para alterar o método toString. Repare que a classe Funcionario possui muitos atributos e métodos, encontrar o toString no meio deles também leva um certo tempo. Para isso, temos o atalho ctrl + O, que abre uma caixa de diálogo com todos os membros da classe. Nessa caixa podemos começar a digitar o nome do método/atributo que queremos abrir, nesse caso o toString.
+
+Show members
+
+Com o toString aberto, vemos vários atributos da classe sendo impressos. Frequentemente quando estamos implementando um método queremos saber o tipo de uma variável que está longe, ou ver a declaração de um método que foi chamado. O caminho mais rápido para fazer isso é, com o cursor na variável (ou no método, ou no nome de uma classe), apertar F3 que nos leva para a declaração de qualquer elemento.
+
+Posicione o cursor em cima da variável dataNascimento e aperte F3 para ir para a declaração. Vemos que a variável é do tipo Calendar, que é uma classe abstrata. Se quiséssemos instanciar um Calendar precisaríamos usar alguma implementação concreta. Para descobrir isso de maneira rápida, podemos posicionar o cursor em cima de Calendar e apertar ctrl + T para ver todas as implementações da classe. Esse atalho também funciona em cima de um método, para vermos todas as classes que implementam esse método.
+
+Show hierarchy
+
+Após sanar a nossa dúvida queremos voltar para o método que estávamos implementando. Para isso podemos usar o atalho alt + seta pra esquerda, que funciona como o botão voltar do seu navegador web. Da mesma forma, alt + seta pra direita funciona como o avançar do navegador. Podemos usar esses atalhos repetidamente para voltarmos para lugares visitados anteriormente.
+
+Abramos então a classe ImportadorDeGastos (usando o atalho!). Uma forma importante de entender o papel dessa classe no sistema é saber quais outras dependem dela. Para saber onde essa classe é usada, coloque o cursor no nome dela e use ctrl + shift + G. Este atalho, chamado de Find Usages, encontra os usos de classes, métodos ou atributos. Para métodos, há um atalho otimizado chamado Call Hierarchy. Esse é o ctrl + alt + H que, além de mostrar os usos de um método, mostra também os usos dos métodos que usam esse método, e assim por diante, ou seja, a hierarquia de chamadas de método até chegar no método pesquisado.
+
+Call Hierarchy
+
+Para finalizar, temos a busca textual: buscar qualquer texto em qualquer tipo de arquivo. Se quiser buscar dentro do mesmo arquivo, pode usar o ctrl + F, que abrirá uma tela para digitar o termo de busca. Nessa tela existem algumas opções para melhorar a busca, como o Wrap Search que, ao terminar o arquivo, volta a buscar desde o começo, e o Incremental que já vai buscando enquanto você digita. Ainda há as opções de Case sensitive (considerar maíusculas e minúsculas), buscar só palavra inteira e usar expressões regulares. Você pode também substituir o que foi buscado por outro texto. Por exemplo se quiser substituir tudo que está public para private, basta colocar o primeiro no campo Find, o segundo no campo Replace with e usar o botão Replace All (alt + A).
+
+Ainda no mesmo arquivo, podemos usar ctrl + J para fazer a busca incremental, por exemplo, ctrl + J public já vai para o próximo public que for encontrado e, então, você pode usar ctrl + K e ctrl + shift + K para ir para a próxima ocorrência ou a anterior, respectivamente.
+
+Quando a busca é menos localizada, podemos usar o ctrl + H, que é capaz de buscar em vários arquivos de um projeto ou pasta específica, onde você pode filtrar a busca para um dos tipos de arquivo.
+
+Para saber mais: Atalhos equivalentes no Eclipse versão Mac OS Open Resource: command + shift + R Open Type: command + shift + T Find Usages: command + shift + G Find/Replace: command + F
+
+
+
+
+05 - Diferenciando atributos de métodos
+
+
+Ao pressionarmos ctrl + O, como o Eclipse faz para diferenciar os diversos tipos de membros de nossa classe, como atributos, métodos e construtores ?
+
+RESPONDA
+Opinião do instrutor
+
+O Eclipse usa diversos símbolos para cada tipo de membro:
+
+Quadrados vermelhos para membros que são private;
+
+Círculos verdes para membros que são public;
+
+Losangos amarelos para membros que são protected;
+
+Triângulos azuis para membros que são default;
+
+A diferenciação entre atributos e métodos é feita através do tamanho do símbolo, pequeno para atributos, grande para métodos. Além disso também são utilizadas letras para elementos especiais, como construtores, onde além do desenho também aparece a letra C.
+
+
+
+06- Procurando classes
+
+
+Ao utilizar o atalho ctrl + shift + T para encontrar nossa classe ImportadorDeGastos, poderíamos utilizar caracteres especiais como * e ? na nossa busca.
+
+Quais seriam opções válidas com esses caracteres que nos permitiriam encontrar a classe desejada?
+
+RESPONDA
+Opinião do instrutor
+
+Sempre que utilizamos os caracteres especiais temos que indicar a expressão completa para a busca.
+
+Expressões como I*DGas não são válidas. Temos que indicar para o Eclipse que entre o D e o G temos algum caractere. A expressão válida seria algo como I*D*Gas ou I*D?Gas.
+
+
+
+09-Outras formas de ver hierarquias
+
+
+Além do ctrl + T, existem dois outros atalhos para vermos a hierarquia de uma classe. Esses dois atalhos são o F4 em cima da classe e o ctrl + alt + H.
+
+VER OPINIÃO DO INSTRUTOR
+Opinião do instrutor
+
+Enquanto o ctrl + T mostra uma tela com a hierarquia, o F4 e o ctrl + alt + H abrem uma view com a hierarquia e os membros do tipo consultado.
+
+O ctrl + alt + H tem a vantagem de buscar qualquer tipo para sabermos sua hierarquia.
+
+
+10-Buscando referências
+
+
+Abra a classe ImportadorDeGastos (usando o atalho!) e procure por suas referências usando o ctrl + shift + G em cima do nome. Com esse atalho você consegue ver os usos dessa classe no código Java, como por exemplo em declarações de variáveis, parâmetros de métodos.
+
+Teste as variações desse atalho (tirando o shift, colocando o alt) em uma classe de um projeto qualquer em que você participa e descreva para que servem esses outros atalhos. Teste também esses atalhos em chamadas de métodos ou atributos.
+
+VER OPINIÃO DO INSTRUTOR
+Opinião do instrutor
+
+Os atalhos terminados em G são um pouco relacionados, todos tem a ver com busca de um termo qualquer no workspace.
+
+ctrl + G - Busca a declaração de um termo (classe, atributo, método) no workspace
+ctrl + shift + G - Busca os usos de um termo no workspace, em arquivos Java
+ctrl + alt + G - Busca o termo textualmente, em todos os arquivos da workspace
+Usando essas buscas otimizadas conseguimos encontrar facilmente o que estamos procurando.

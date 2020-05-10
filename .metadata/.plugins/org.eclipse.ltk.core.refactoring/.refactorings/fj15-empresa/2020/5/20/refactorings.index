@@ -1,0 +1,15 @@
+1589134250068	Rename package 'br.com.caelum.empresa'
+1589134315035	Move compilation unit
+1589138050802	Rename local variable 'tp'
+1589138080891	Rename local variable 'dt'
+1589138091436	Rename local variable 'vl'
+1589138101519	Rename local variable 'mat'
+1589138166794	Rename type 'Importador'
+1589138509733	Extract method 'converteDataTxtParaCalendar'
+1589141662756	Delete element
+1589143545529	Delete element
+1589145517715	Extract superclass 'DAO'
+1589151120934	Delete element
+1589151355627	Delete element
+1589151360813	Delete element
+1589151365245	Delete element

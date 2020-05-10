@@ -1,0 +1,18 @@
+package br.com.paulo.empresa;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+import br.com.paulo.empresa.modelo.Funcionario;
+import br.com.paulo.empresa.modelo.Gasto;
+
+public class TestaGasto {
+	
+	public static void main(String[] args) {
+		Calendar dataNascimento = new GregorianCalendar(1989, 3, 14);//yyy mm day
+		Funcionario funcionario = new Funcionario("Vinicius", 9, dataNascimento);
+		Calendar hoje = Calendar.getInstance();// retorna o dia e hora atual
+		new Gasto(40, "Taxi", funcionario, hoje);
+	}
+
+}
