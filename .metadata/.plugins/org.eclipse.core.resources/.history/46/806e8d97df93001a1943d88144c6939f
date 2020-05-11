@@ -1,0 +1,5 @@
+package br.com.paulo.erp.exceptions;
+
+public enum TipoDeProduto {
+	LIMPEZA, COMIDA, ELETRONICOS, OUTROS;
+}

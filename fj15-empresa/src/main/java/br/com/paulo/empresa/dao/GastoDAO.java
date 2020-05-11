@@ -10,6 +10,7 @@ public class GastoDAO {
 
 	private DAO<Gasto> dao = new DAO<Gasto>(Gasto.class);
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(GastoDAO.class);
 
 	public void adiciona(Gasto entity) {
