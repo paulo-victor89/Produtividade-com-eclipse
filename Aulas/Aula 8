@@ -1,0 +1,285 @@
+02 - Testando e Debugando sua aplicação
+
+
+Uma grande parte do desenvolvimento de software se resume a dar manutenção no código existente da aplicação, tanto para adicionar novas funcionalidades, quanto para corrigir algum problema - um bug. Uma das maneiras de facilitar esse trabalho é escrevendo testes automatizados. Com eles podemos replicar o bug e garantir que ele nunca volte, verificar e documentar um comportamento qualquer da aplicação ou até ajudar a melhorar o design da sua aplicação.
+
+Em Java, a ferramenta de testes automatizados mais utilizada é o JUnit. Com ele conseguimos criar testes de maneira bem fácil, com classes java normais, rodar os testes e gerar relatórios sobre eles. O Eclipse já vem com suporte nativo ao JUnit, com uma view e alguns wizards dedicados a ele.
+
+No nosso exemplo principal de projeto, uma classe um tanto complicada (e, portanto, mais sujeita a bugs) é a ImportadorDeGastos. Por conta disso, ela foi a eleita para começarmos nossos testes automatizados. Por convenção e também para que seja fácil separar classes de teste das principais, é prática comum criar uma source folder dedicada aos testes. Use o atalho de criação (ctrl + N Source folder) para criar o pacote src/main/test, seguindo a convenção de nomes do Maven.
+
+Para criar um novo teste, poderíamos simplesmente criar uma nova classe na source folder de testes, colocá-la no mesmo pacote da classe a ser testada e adicionar o sufixo Test a ela. Felizmente, o Eclipse possui um wizard que já cria a classe seguindo as convenções. Para acessá-lo, abra a classe ImportadorDeGastos e faça ctrl + N JUnitTestCase.
+
+A janela de criação já virá preenchida com valores bons: o pacote certo, a classe que está sendo testada e o nome da classe de teste. Só precisamos mudar as duas primeiras informações da janela: troque a source folder para src/test/java e avise que é um new JUnit 4 Test. Ao confirmar a criação, o Eclipse já tomará a iniciativa de adicionar os JARs do JUnit 4 ao Build path do projeto: basta dar enter.
+
+public class ImportadorDeGastosTest {
+
+}
+Agora que temos a classe, podemos começar a desenvolver o teste mais simples. Primeiramente precisamos dar um nome bom para o teste - já que essa é a primeira coisa que vai aparecer se o teste falhar. Por exemplo, vamos criar o teste para o seguinte cenário: "quando o arquivo passado for vazio, o importador deveria retornar uma lista vazia". A forma mais fácil de criar um método de teste para JUnit 4 é usando o template Test ctrl+espaço+espaço e apenas alterar o nome para algo mais descritivo.
+
+@Test
+public void deveRetornarUmaListaVaziaSeOArquivoPassadoForVazio() {
+
+}
+Terminaremos de preencher o método passando uma entrada de dados vazia e chamando o importador. Finalmente, temos que verificar que a coleção devolvida não tem nenhum item. Note que, ao usar o template do método de teste, ele já faz o import estático dos métodos da classe Assert - faça ctrl + espaço dentro do método para ver todos os assert* disponíveis. Nosso código de teste vai ficar assim:
+
+@Test
+public void deveRetornarUmaListaVaziaSeOArquivoPassadoForVazio() throws ParseException {
+    ByteArrayInputStream input = new ByteArrayInputStream(new byte[0]);
+
+    ImportadorDeGastos importador = new ImportadorDeGastos();
+    Collection<Gasto> lista = importador.importa(input);
+
+    assertTrue("a lista não está vazia", lista.isEmpty());
+}
+Para rodar os testes, podemos usar o atalho ctrl + F11, que tenta descobrir o que você quer rodar baseado na classe que está aberta no editor... e acerta, na maior parte das vezes. O problema aparece quando há ambiguidade. Para evitá-la, muitos desenvolvedores preferem usar o atalho de execução alt + shift + X seguido da letra T de testes.
+
+Para quem ainda não se desvinculou do mouse, botão direito > Run As > JUnit Test faz a mesma coisa.
+
+A view do JUnit se abrirá e veremos a barra de testes verde, já que o teste está passando. Passemos, então, para o próximo teste, com um gasto para ser importado. Podemos nos basear no teste anterior para isso, selecionando todo o código do teste e usando o ctrl+alt+seta pra baixo para copiar um bloco. Devemos renomear o teste, por exemplo para deveRetornarUmGastoDeUmArquivoNoFormatoCorreto e passar como input uma String com os dados de um gasto:
+
+@Test
+public void deveRetornarUmGastoDeUmArquivoNoFormatoCorreto() throws ParseException {
+    String conteudo = "CARTAOx1012011000010000123jbjasbd jbjbbb                22071983\r\n";
+    ByteArrayInputStream input = new ByteArrayInputStream(conteudo.getBytes());
+
+    ImportadorDeGastos importador = new ImportadorDeGastos();
+    Collection<Gasto> lista = importador.importa(input);
+
+    assertTrue("a lista não está vazia", lista.isEmpty());
+}
+A barra, dessa vez, fica vermelha. Isso acontece quando qualquer um dos testes rodados falha. Um teste pode não passar por causa de uma Failure (ou seja, alguma asserção que fizemos falhou) ou por causa de um Error, que significa que alguma Exception foi lançada durante a execução do teste. Precisamos corrigir todos os testes quebrados e deixar a barra verde, assim sabemos que o nosso trabalho, pelo menos por enquanto, está terminado.
+
+Para corrigir esse teste, perceba o que aparece na seção Failure Trace da aba JUnit:
+
+
+Podemos usar essa stacktrace para ter uma ideia melhor do que está acontecendo. O principal é a mensagem de erro (ou a de falha do teste). Essa mensagem deveria facilitar a vida de quem está recebendo o erro, tanto para se recuperar desse erro, quanto para corrigir eventuais bugs. Se você viu uma mensagem que não te ajudou em nada, tente melhorá-la!
+
+Cada item da stacktrace é clicável (com clique duplo), levando diretamente para o código. Com isso conseguimos ter uma ideia melhor do que causou o erro. Muitas vezes ter o código fonte das bibliotecas usadas no projeto ajuda a compreender melhor um erro estranho no projeto. Não deixe de baixá-las e configurá-las no eclipse, clicando na stacktrace em uma classe de uma biblioteca e em Attach Source. Esse trabalho pode ser facilitado pelo Maven, que tem a opção de baixar os códigos fontes automaticamente.
+
+Contudo, nem sempre a stacktrace é suficiente para entendermos a causa de um problema, por não sabermos os valores passados ou operações que aconteceram anteriormente. Isso é um forte indício de complexidade no código em que estamos trabalhando, então deveríamos refatorá-lo ou isolar os erros de forma melhor com mensagens de erro mais amigáveis. Mas, antes de corrigir a complexidade, precisamos corrigir o erro e, para isso, podemos usar o bom e velho Debug.
+
+O Eclipse tem uma perspectiva inteiramente dedicada ao debug, com várias views que facilitam o processo e as inspeções comuns. Para debugar, precisamos configurar breakpoints, que param a execução nas linhas desejadas. Para isso podemos clicar duas vezes na faixa cinza à esquerda do editor na linha desejada, ou usar ctrl+shift+B com o cursor na linha. O próximo passo é rodar a aplicação em modo de debug, geralmente de uma forma bem similar ao modo normal. Ou seja, rodar uma Java Application (método main), um servidor ou um teste usando, por exemplo, o menu Debug As.
+
+Para rodar o nosso teste com erro em modo de debug, vamos colocar um breakpoint na primeira linha (usando o ctrl+shift+B) e então alt+shift+D T - note que esse é o atalho de execução em debug de testes. O Eclipse vai perguntar se você quer abrir a perspectiva de Debug, que tem as views já configuradas. Vamos confirmar essa mudança (clique em Remember my decision se quiser que isso aconteça sempre).
+
+Repare que o editor agora tem uma linha realçada, que indica onde a execução está parada:
+
+
+Podemos usar o F6(Step Over) para executar a linha atual e ir para próxima linha do método. Com isso podemos ir até a linha que invoca o método importa e usar a view Variables para saber os valores das variáveis criadas.
+
+
+Outra maneira de ver o valor de uma variável é simplesmente colocar o ponteiro do mouse em cima dela e esperar alguns segundos até um popup com o valor dela aparecer. Do lado da aba de Variables temos a de Breakpoints, onde podemos gerenciar todos os breakpoints existentes na aplicação. Podemos desabilitá-los no checkbox ao lado, removê-los com a tecla Delete ou os ícones, que removem um e todos os breakpoints, respectivamente. Podemos ainda colocar um breakpoint em uma exceção, com o ícone. Assim toda vez que essa exceção ocorrer, a execução para logo antes dela ser lançada.
+
+Estamos na linha de execução do método importa mas não queremos ir para a próxima linha e, sim, entrar no método. Para isso usamos o F5(Step Into), que pula para a primeira linha do próximo método que o java executaria.
+
+Dentro do método importa, sabemos que o erro está na conversão de datas, então podemos colocar o cursor na linha em que a conversão é feita e apertar ctrl+R (Run to Line), que continua a execução até ela passar pela linha do cursor.
+
+
+Antes de mandar o método executar de verdade, podemos selecionar partes do código que queremos ver o valor. Por exemplo, ao selecionar o converteData(df, dataNascTxt) e então ctrl + shift + D para mostrar o valor da expressão. Se quisermos uma versão mais detalhada do que o toString do valor, podemos usar o ctrl + shift + I. Se usarmos o ctrl + shift + D duas vezes em uma expressão, abrimos a view Display, onde podemos executar qualquer código. Podemos escrever, por exemplo, gastos.size();, selecionar esse código e apertar ctrl + shift + D ou ctrl + shift + I para ver o resultado.
+
+Podemos, ainda, escrever uma expressão qualquer nessa aba Displays (ou mesmo no código real) e monitorar o resultado dela, à medida que o código é executado. Para isso usamos o ctrl+shift+I duas vezes. Isso abre a view Expressions onde vemos o valor de uma determinada expressão no contexto atual. Podemos adicionar uma expressão qualquer através do Add new expression.
+
+A execução está parada antes da chamada do método converteData, então para ver o que está acontecendo vamos usar novamente o F5. Se olharmos os valores dos parâmetros passados para o método, vemos que a string passada é "22071983", que é uma data válida. Queremos então voltar para o método externo e continuar debugando, para isso usaremos o F7 (Step Return). Então podemos usar o F6 para ir para a próxima linha e o F5 para entrar na próxima chamada do converteData.
+
+Agora a string passada é a "x1012011", que não é uma data válida, que vai gerar o erro mostrado no teste. Para continuar a execução do método até o final (ou até o próximo breakpoint), podemos usar o F8 (Resume), ou ainda podemos usar o ctrl+F2 para parar a execução.
+
+Voltemos, então, para o teste para corrigi-lo. Podemos fazer isso na perspectiva de debug, mas o melhor é voltar à perspectiva anterior com o ctrl+F8. Substituindo o x pelo zero, podemos rodar o teste novamente, que vai falhar. Dessa vez a falha é porque não mudamos a asserção do teste anterior. O esperado não é uma lista vazia e, sim, uma lista com um elemento:
+
+assertEquals(1, lista.size());
+Com testes bons e um design simples, conseguimos testar a nossa aplicação sem ter que recorrer para sessões de debug mas, quando precisarmos, o Eclipse tem uma boa infra-estrutura para facilitar esse processo.
+
+Para saber mais: outra forma de adicionar bibliotecas ao projeto
+Para começar a escrever os testes, precisamos que o JUnit esteja no classpath. Da forma como fizemos nessa aula, o próprio Eclipse adicionou a biblioteca ao classpath, mas essa não é a única forma de fazê-lo. Também é uma possibilidade baixar o JAR do JUnit ou usar o que já vem junto com o Eclipse, mas configurá-lo através do Build Path.
+
+Essa configuração é feita nas preferências do projeto (botão direito no projeto > Build path > Configure build path). Vamos trabalhar com a aba Libraries. Nela, conseguimos adicionar bibliotecas ao classpath da aplicação, usando os botões do lado direito. Os mais importantes são Add JAR e Add External JAR para jars dentro e fora da workspace, e o Add Library, para adicionar bibliotecas já configuradas dentro do eclipse. Para adicionar o JUnit basta clicar em Add Library e selecionar JUnit. Na próxima tela, selecione a versão JUnit 4, que é baseada em anotações e bem mais fácil de usar.
+
+
+-----------------------------------------------------------------------------
+
+03 - Rodando o JUnit
+
+Vamos nos preparar para criar testes de unidade. Para isso, no projeto fj15-empresa, temos uma nova necessidade de separar os gastos que precisam ser aprovados pela gerência.
+
+Crie a classe FiltradorDeGastosEspeciais com o seguinte método:
+
+    public List<Gasto> filtraGastosGrandes(List<Gasto> gastos) {
+        List<Gasto> gastosAcimaDoLimite = new ArrayList<Gasto>();
+        for (Gasto gasto : gastos) {
+            if(gasto.getValor() > this.limite) 
+                gastosAcimaDoLimite.add(gasto);
+        }
+        return gastosAcimaDoLimite;
+    }
+Use o ctrl + shift + O para fazer os imports necessários, ctrl + 1 para criar o atributo limite e ctrl + 3 constructor para criar o construtor que recebe o limite.
+
+Agora, com o cursor nessa classe, faça ctrl + N JUnit Test Case e crie, aos moldes do explicado no capítulo, um teste de unidade que verifica que, dada uma lista de gastos, só devolve os gastos acima do limite. Não esqueça de colocá-lo na source folder de testes!. Além disso, ao tentar criar um JUnit Test Case, o eclipse o ajudará a importar a biblioteca do JUnit 4! Leia as janelas e selecione a opção que automaticamente já o adiciona ao build-path.
+
+public class FiltradorDeGastosTest {
+
+    Test <ctrl + espaço + espaço>
+Preencha o método de teste com a criação de 3 gastos, um deles acima do limite estipulado, um abaixo e um igual.
+
+VER OPINIÃO DO INSTRUTOR
+Opinião do instrutor
+
+Sua classe de teste deve estar parecida com isso:
+
+public class FiltradorDeGastosTest {
+
+    @Test
+    public void soDevolveGastosComValorMaiorQueOLimite() throws Exception {
+        Funcionario funcionario = new Funcionario("Felipe", 123, new GregorianCalendar(1989, 3, 17));
+        Calendar hoje = Calendar.getInstance();
+
+        Gasto g1 = new Gasto(25.0, "almoco", funcionario, hoje);
+        Gasto g2 = new Gasto(150.0, "jantar", funcionario, hoje);
+        Gasto g3 = new Gasto(22.0, "extras", funcionario, hoje);
+        List<Gasto> lista = Arrays.asList(g1, g2, g3);
+
+        FiltradorDeGastosEspeciais filtrador = new FiltradorDeGastosEspeciais(25.0);
+        List<Gasto> gastosGrandes = filtrador.filtraGastosGrandes(lista);
+
+        assertEquals(1, gastosGrandes.size());
+        assertEquals(150.0, gastosGrandes.get(0).getValor(), 0.00001);
+    }
+}
+
+-----------------------------------------------------------------------------
+
+04 - Rodando testes via atalho
+
+
+Agora, execute o teste. Você pode usar o menu Run as > JUnit Test, o atalho ctrl + F11 ou, ainda, o atalho mais versátil: alt + shift + X, T.
+
+
+Opinião do instrutor
+
+Rode novamente. Dessa vez, use o atalho do teclado para se acostumar com ele, afinal você rodará seus testes muitas vezes por dia.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+05 - Botões da view do JUnit
+
+
+Vamos fazer nosso teste falhar propositalmente. Mude a linha abaixo na classe FiltradorDeGastosEspeciais:
+
+if (gasto.getValor() >= this.limite) gastosAcimaDoLimite.add(gasto);
+//antes era if (gasto.getValor() > this.limite) gastosAcimaDoLimite.add(gasto);
+Rode novamente os testes (usando o atalho). Ele deve falhar. Se quiser, faça com que a view do JUnit mostre apenas os testes que estão falhando. Para isso, clique no botão com a legenda Show failures only, cujo desenho são dois X dentro de quadrados azul e vermelho.
+
+Na verdade, essa é a regra de negócios correta: ela deve devolver os gastos com valor maior ou igual ao valor limite. Quer dizer, só os números menores devem ser ignorados.
+
+Corrija o código do seu teste agora, acertando ou criando novos assert.... Você pode ir direto para a linha do teste que falhou clicando duas vezes na stacktrace, como explicado nessa aula!
+
+Para criar um novo assert... queremos nos basear na linha que verifica o valor do primeiro gasto. Para copiá-la para a linha anterior, lembre-se do comando ctrl + alt + (seta para cima). Lembre-se de praticar os atalhos vistos anteriormente!
+
+Na view do JUnit há alguns botões. Em particular, para que servem os botões no topo dessa view? Quando você usaria, por exemplo, o Show failures only?
+
+
+Opinião do instrutor
+
+Precisamos mudar os asserts de acordo com o os valores recebidos nos testes. No caso, precisamos mudar de 1 para 2 e de 150.0 para 25.0
+
+Setinhas: navegação nos testes;
+Show failures only: só mostra relatório dos testes que não passaram;
+Scroll lock: não é exatamente útil;
+Rerun tests: roda novamente a mesma bateria de testes pedidos na última vez;
+Rerun tests - failure first: roda os testes da mesma bateria, mas começa a execução pelos que quebraram da última vez.
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+
+06 - Debugando sequência de Fibonacci
+
+
+Copie a classe abaixo para seu projeto. Pelo nome, percebemos que ela calcula a sequência de Fibonacci.
+
+O problema é que a sua implementação não está muito clara. Para entender o que o algoritmo faz, é importante entendermos o conteúdo das variáveis n1 e n2 durante o cálculo de um dos números da sequência.
+
+Para isso, coloque um breakpoint na primeira linha do método calcula() - utilize o atalho ctrl + shift + B para isso.
+
+public class Fibonacci {
+
+    public int calcula(int n) {
+
+        int n1 = 0;
+        int n2 = 1;
+
+        for(int i = 1; i < n; i++) {
+            n2 = n2 + n1;
+            n1 = n2 - n1;
+        }
+
+        return n2;
+    }
+
+    public static void main(String[] args) {
+        for(int i = 1; i < 10; i++) {
+            System.out.println("fib(" + i + ")=" + new Fibonacci().calcula(i));
+        }
+    }
+}
+Ao rodar essa classe em modo de Debug pela primeira vez, o Eclipse pedirá para usar a perspectiva de debug. Deixe que ele faça isso!
+
+
+Opinião do instrutor
+
+As principais views utilizadas na perspectiva de Debug, além do Editor, são Variables e Breakpoints.
+
+Outra muito útil é a view Display, que você pode abrir com ctrl + 3 Display.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+07- Debugando o código com atalhos
+
+
+Novamente, rode o programa em modo debug usando alt + shift + D, J e observe os valores de ambas as variáveis.
+
+Use os atalhos aprendidos para monitorar os valores das variáveis, pular para o próximo passo e assim por diante. Relembrando: F6 para passar para a próxima linha e ctrl + shift + D para mostrar o valor (que também pode ser acompanhado na view Variables).
+
+VER OPINIÃO DO INSTRUTOR
+Opinião do instrutor
+
+Ao executar o método fibonacci.calcula(5), as variáveis n1 e n2 se comportam dessa forma:
+
+n1 / n2
+
+0 / 1
+
+1 / 1
+
+1 / 2
+
+2 / 3
+
+3 / 5
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+08 - Utilizando o Display durante um debug
+
+
+Volte ao FiltradorDeGastosEspeciais e coloque um breakpoint na linha:
+
+    if(gasto.getValor() >= this.limite)
+Execute, agora, seu teste em modo Debug (alt + shift + D, T) e permita que o Eclipse mude para a perspectiva de Debug.
+
+Abra a view Display e digite nela:
+
+gasto.getFuncionario().getNome();
+Selecione esse texto inteiro e faça ctrl + shift + D para mostrar o nome do funcionário atrelado a esse gasto.
+
+VER OPINIÃO DO INSTRUTOR
+Opinião do instrutor
+
+No nosso teste, criamos um Funcionário de nome Felipe:
+
+Funcionario funcionario = new Funcionario("Felipe", 123, dataNascimento);
+E, assim, o Display mostrará:
+
+(java.lang.String) Felipe

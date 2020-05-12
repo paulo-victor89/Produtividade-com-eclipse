@@ -1,0 +1,12 @@
+package br.com.paulo.empresa;
+
+import org.junit.Test;
+
+public class ImportadorTest {
+	
+	@Test
+	public void test(){
+		
+	}
+
+}

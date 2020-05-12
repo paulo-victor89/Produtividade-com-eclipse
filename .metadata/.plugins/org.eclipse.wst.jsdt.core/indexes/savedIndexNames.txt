@@ -1,0 +1,8 @@
+INDEX VERSION 1.3+C:\Users\paulo_campelo\workspace\produtividade extrema na ide com java\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+1210944365.index
+470115758.index
+3291616187.index
+2222270170.index
+1708716955.index
+2772905826.index
+1302031533.index
