@@ -19,7 +19,7 @@ public class ImportadorDeGastos {
 	public Collection<Gasto> importa(InputStream entrada) throws ParseException {
 		Scanner leitor = new Scanner(entrada);
 		Set<Gasto> gastos = new LinkedHashSet<Gasto>();
-		
+		;
 
 		while (leitor.hasNextLine()) {
 			String line = leitor.nextLine();
