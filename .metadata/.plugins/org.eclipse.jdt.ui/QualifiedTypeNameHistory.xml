@@ -9,10 +9,8 @@
 <fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
 <fullyQualifiedTypeName name="java.io.UnsupportedEncodingException"/>
 <fullyQualifiedTypeName name="br.com.paulo.empresa.leitor.Importador"/>
-<fullyQualifiedTypeName name="java.io.ByteArrayInputStream"/>
 <fullyQualifiedTypeName name="java.text.ParseException"/>
 <fullyQualifiedTypeName name="java.io.InputStream"/>
-<fullyQualifiedTypeName name="br.com.paulo.empresa.leitor.ImportadorDeGastos"/>
 <fullyQualifiedTypeName name="java.util.Collection"/>
 <fullyQualifiedTypeName name="java.util.Set"/>
 <fullyQualifiedTypeName name="java.util.LinkedHashSet"/>
@@ -20,4 +18,10 @@
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="br.com.paulo.empresa.modelo.Gasto"/>
 <fullyQualifiedTypeName name="br.com.paulo.empresa.dao.GastoDAO"/>
+<fullyQualifiedTypeName name="java.io.Serializable"/>
+<fullyQualifiedTypeName name="org.junit.Test"/>
+<fullyQualifiedTypeName name="sun.awt.image.ByteArrayImageSource"/>
+<fullyQualifiedTypeName name="br.com.paulo.empresa.leitor.ImportadorDeGastosTest"/>
+<fullyQualifiedTypeName name="java.io.ByteArrayInputStream"/>
+<fullyQualifiedTypeName name="br.com.paulo.empresa.leitor.ImportadorDeGastos"/>
 </qualifiedTypeNameHistroy>

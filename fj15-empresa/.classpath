@@ -40,7 +40,7 @@
 	<classpathentry kind="lib" path="C:/Users/paulo_campelo/workspace/neon/livraria/WebContent/WEB-INF/lib/mysql-connector-java-8.0.11.jar"/>
 	<classpathentry kind="lib" path="C:/Users/paulo_campelo/workspace/neon/livraria/WebContent/WEB-INF/lib/primefaces-5.3.jar"/>
 	<classpathentry kind="lib" path="C:/Users/paulo_campelo/workspace/neon/livraria/WebContent/WEB-INF/lib/validation-api-1.0.0.GA.jar"/>
-	<classpathentry kind="lib" path="C:/Users/paulo_campelo/Desktop/Paulo Victor/Projetos Desenvolvimento pessoal/Novos jars/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="C:/Users/paulo_campelo/Desktop/Paulo Victor/Projetos Desenvolvimento pessoal/Novos jars/Jar&apos;s/log4j-1.2.17.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

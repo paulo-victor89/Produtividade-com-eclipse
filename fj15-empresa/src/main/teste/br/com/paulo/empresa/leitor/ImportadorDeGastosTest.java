@@ -31,7 +31,7 @@ public class ImportadorDeGastosTest {
 		ImportadorDeGastos importador = new ImportadorDeGastos();
 		Collection<Gasto> gastos = importador.importa(input);
 		
-		assertEquals("Ddeveria conter um elemento!", 1, gastos.size());
+		assertEquals("Deveria conter um elemento!", 1, gastos.size());
 	}
 
 }

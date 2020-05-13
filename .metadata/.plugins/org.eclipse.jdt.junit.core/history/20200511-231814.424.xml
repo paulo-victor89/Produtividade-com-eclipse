@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><testrun name="ImportadorDeGastosTest" project="fj15-empresa" tests="2" started="2" failures="0" errors="0" ignored="0">
-  <testsuite name="br.com.paulo.empresa.leitor.ImportadorDeGastosTest" time="0.011">
-    <testcase name="deveRetornarUmGastoDeUmArquivoNoFormatoCorreto" classname="br.com.paulo.empresa.leitor.ImportadorDeGastosTest" time="0.009"/>
-    <testcase name="deveRetornarUmaListaVaziaSeOArquivoPassadoForVazio" classname="br.com.paulo.empresa.leitor.ImportadorDeGastosTest" time="0.001"/>
-  </testsuite>
-</testrun>
